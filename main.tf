@@ -11,7 +11,7 @@ resource "azurerm_resource_group" "jenkins" {
 
 # Create virtual network
 resource "azurerm_virtual_network" "jenkins" {
-  name                = "acctvn"
+  name                = "jenkins_acctvn"
   address_space       = ["10.0.0.0/16"]
   location            = azurerm_resource_group.jenkins.location
   resource_group_name = azurerm_resource_group.jenkins.name
@@ -19,7 +19,7 @@ resource "azurerm_virtual_network" "jenkins" {
 
 # Create subnet
 resource "azurerm_subnet" "jenkins" {
-  name                 = "acctsub"
+  name                 = "jenkins_acctsub"
   resource_group_name  = azurerm_resource_group.jenkins.name
   virtual_network_name = azurerm_virtual_network.jenkins.name
   address_prefix       = "10.0.2.0/24"
@@ -27,7 +27,7 @@ resource "azurerm_subnet" "jenkins" {
 
 # Create public IP Address
 resource "azurerm_public_ip" "jenkins" {
-  name                = "publicip"
+  name                = "jenkins_publicip"
   location            = azurerm_resource_group.jenkins.location
   resource_group_name = azurerm_resource_group.jenkins.name
   allocation_method   = "Static"
@@ -36,7 +36,7 @@ resource "azurerm_public_ip" "jenkins" {
 
 # Create Network Security Group and rule
 resource "azurerm_network_security_group" "jenkins" {
-  name                = "nsg"
+  name                = "jenkins_nsg"
   location            = azurerm_resource_group.jenkins.location
   resource_group_name = azurerm_resource_group.jenkins.name
 
@@ -55,13 +55,13 @@ resource "azurerm_network_security_group" "jenkins" {
 
 # Create virtual network interface
 resource "azurerm_network_interface" "jenkins" {
-  name                = "acctni"
+  name                = "jenkins_acctni"
   location            = azurerm_resource_group.jenkins.location
   resource_group_name = azurerm_resource_group.jenkins.name
   network_security_group_id = azurerm_network_security_group.jenkins.id
 
   ip_configuration {
-    name                          = "testconfiguration1"
+    name                          = "jenkins_testconfiguration1"
     subnet_id                     = azurerm_subnet.jenkins.id
     private_ip_address_allocation = "dynamic"
     public_ip_address_id          = azurerm_public_ip.jenkins.id
@@ -71,7 +71,7 @@ resource "azurerm_network_interface" "jenkins" {
 # Create a Linux virtual machine
 
 resource "azurerm_virtual_machine" "jenkins" {
-  name                  = "acctvm"
+  name                  = "jenkins_acctvm"
   location              = azurerm_resource_group.jenkins.location
   resource_group_name   = azurerm_resource_group.jenkins.name
   network_interface_ids = [azurerm_network_interface.jenkins.id]
@@ -85,7 +85,7 @@ resource "azurerm_virtual_machine" "jenkins" {
   }
 
   storage_os_disk {
-    name          = "myosdisk1"
+    name          = "jenkins_myosdisk1"
     caching       = "ReadWrite"
     create_option = "FromImage"
     managed_disk_type = "Standard_LRS"

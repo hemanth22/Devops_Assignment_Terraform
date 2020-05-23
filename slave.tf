@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "capstonetest" {
 
 # Create virtual network
 resource "azurerm_virtual_network" "capstonetest" {
-  name                = "acctvn"
+  name                = "capstonetest_acctvn"
   address_space       = ["10.0.0.0/16"]
   location            = azurerm_resource_group.capstonetest.location
   resource_group_name = azurerm_resource_group.capstonetest.name
@@ -14,7 +14,7 @@ resource "azurerm_virtual_network" "capstonetest" {
 
 # Create subnet
 resource "azurerm_subnet" "capstonetest" {
-  name                 = "acctsub"
+  name                 = "capstonetest_acctsub"
   resource_group_name  = azurerm_resource_group.capstonetest.name
   virtual_network_name = azurerm_virtual_network.capstonetest.name
   address_prefix       = "10.0.2.0/24"
@@ -22,7 +22,7 @@ resource "azurerm_subnet" "capstonetest" {
 
 # Create public IP Address
 resource "azurerm_public_ip" "capstonetest" {
-  name                = "publicip"
+  name                = "capstonetest_publicip"
   location            = azurerm_resource_group.capstonetest.location
   resource_group_name = azurerm_resource_group.capstonetest.name
   allocation_method   = "Static"
@@ -31,7 +31,7 @@ resource "azurerm_public_ip" "capstonetest" {
 
 # Create Network Security Group and rule
 resource "azurerm_network_security_group" "capstonetest" {
-  name                = "nsg"
+  name                = "capstonetest_nsg"
   location            = azurerm_resource_group.capstonetest.location
   resource_group_name = azurerm_resource_group.capstonetest.name
 
@@ -50,13 +50,13 @@ resource "azurerm_network_security_group" "capstonetest" {
 
 # Create virtual network interface
 resource "azurerm_network_interface" "capstonetest" {
-  name                = "acctni"
+  name                = "capstonetest_acctni"
   location            = azurerm_resource_group.capstonetest.location
   resource_group_name = azurerm_resource_group.capstonetest.name
   network_security_group_id = azurerm_network_security_group.capstonetest.id
 
   ip_configuration {
-    name                          = "testconfiguration1"
+    name                          = "capstonetest_testconfiguration1"
     subnet_id                     = azurerm_subnet.capstonetest.id
     private_ip_address_allocation = "dynamic"
     public_ip_address_id          = azurerm_public_ip.capstonetest.id
@@ -66,7 +66,7 @@ resource "azurerm_network_interface" "capstonetest" {
 # Create a Linux virtual machine
 
 resource "azurerm_virtual_machine" "capstonetest" {
-  name                  = "acctvm"
+  name                  = "capstonetest_acctvm"
   location              = azurerm_resource_group.capstonetest.location
   resource_group_name   = azurerm_resource_group.capstonetest.name
   network_interface_ids = [azurerm_network_interface.capstonetest.id]
@@ -80,7 +80,7 @@ resource "azurerm_virtual_machine" "capstonetest" {
   }
 
   storage_os_disk {
-    name          = "myosdisk1"
+    name          = "capstonetest_myosdisk1"
     caching       = "ReadWrite"
     create_option = "FromImage"
     managed_disk_type = "Standard_LRS"
