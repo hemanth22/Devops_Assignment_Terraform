@@ -106,7 +106,7 @@ resource "azurerm_virtual_machine_extension" "capstonetest" {
 
   settings = <<SETTINGS
     {
-        "commandToExecute": "wget https://git.io/azuretestintellipaat.sh && sh azuretestintellipaat.sh"
+        "commandToExecute": "wget https://git.io/azuretestintellipaats.sh && sh azuretestintellipaats.sh"
     }
 SETTINGS
 
